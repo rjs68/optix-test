@@ -2,6 +2,7 @@ import { useRef, useState, Children} from 'react';
 import { easeIn, easeOut } from "polished";
 import { useBoolean } from "react-use";
 import { createReducer }from "@reduxjs/toolkit"
+import { MovieTable } from './MovieTable';
 
 // TODO: use https://giddy-beret-cod.cyclic.app/movieCompanies
 const mockMovieCompanyData: any = [
@@ -32,16 +33,8 @@ export const App = () =>  {
       <h2>Welcome to Movie database!</h2>
       {refreshButton("Refresh")}
       <p>Total movies displayed {movieLength.current}</p>
-      <span>Title - Review - Film Company</span>
       <br/>
-      {mockMovieData.map((movie: any) => 
-        <span onClick={() => {setSelectedMovie(movie)}}>
-          {movie.title}{" "}
-          {movie.reviews.reduce((acc: any, i: any) => (acc + i)/movie.reviews.length, 0)?.toString().substring(0, 3)}{" "}
-          {mockMovieCompanyData.find((f: any) => f.id === movie.filmCompanyId)?.name}
-          <br/>
-        </span>
-      )}
+        <MovieTable />
       <br/>
       <div>
        {selectedMovie ? selectedMovie.title as any ? "You have selected " +  selectedMovie.title  as any : "No Movie Title" : "No Movie Seelcted"}
