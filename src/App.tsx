@@ -3,6 +3,7 @@ import { easeIn, easeOut } from "polished";
 import { useBoolean } from "react-use";
 import { createReducer }from "@reduxjs/toolkit"
 import { MovieTable } from './MovieTable';
+import { MovieTableData } from './MovieTypes';
 
 // TODO: use https://giddy-beret-cod.cyclic.app/movieCompanies
 const mockMovieCompanyData: any = [
@@ -16,9 +17,8 @@ const mockMovieData: any = [
 ];
 
 export const App = () =>  {
-
   const movieLength = useRef(mockMovieData.length);
-  const [selectedMovie, setSelectedMovie] = useState(0); 
+  const [selectedMovie, setSelectedMovie] = useState<MovieTableData | undefined>(undefined); 
 
   const refreshButton = (buttonText: any) => {
     if (mockMovieCompanyData) {
@@ -28,16 +28,18 @@ export const App = () =>  {
     }   
   };
 
+  console.log("selectedMovie", selectedMovie);
+
   return (
     <div>
       <h2>Welcome to Movie database!</h2>
       {refreshButton("Refresh")}
       <p>Total movies displayed {movieLength.current}</p>
       <br/>
-        <MovieTable />
+        <MovieTable setSelectedMovie={setSelectedMovie}/>
       <br/>
       <div>
-       {selectedMovie ? selectedMovie.title as any ? "You have selected " +  selectedMovie.title  as any : "No Movie Title" : "No Movie Seelcted"}
+       {selectedMovie ? selectedMovie.title ? "You have selected " +  selectedMovie.title : "No Movie Title" : "No Movie Selected"}
        {selectedMovie && <p>Please leave a review below</p> }
        {selectedMovie && 
         <form onSubmit={() => {}}>

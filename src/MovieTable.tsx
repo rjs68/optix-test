@@ -1,29 +1,7 @@
 import { useState } from 'react';
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
-
-type MovieCompany = {
-    id: string;
-    name: string;
-}
-
-type Movie = {
-    id: string;
-    reviews: number[];
-    title: string;
-    filmCompanyId: string;
-    cost: number;
-    releaseYear: number;
-}
-
-type TableData = {
-    id: string;
-    title: string;
-    reviews: string;
-    filmCompany: string;
-}
-
-type Order = 'asc' | 'desc';
+import { Movie, MovieCompany, MovieTableData, MovieTableProps, Order } from './MovieTypes';
 
 const mockMovieCompanyData: MovieCompany[] = [
     {id: "1", name: "Test Productions"},
@@ -47,29 +25,29 @@ const descendingComparator = <T,>(a: T, b: T, orderBy: keyof T) => {
 const getComparator = <Key extends keyof any>(
     order: Order,
     orderBy: Key,
-  ): (
+): (
     a: { [key in Key]: number | string },
     b: { [key in Key]: number | string },
-  ) => number => {
+) => number => {
     return order === 'desc'
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
+        ? (a, b) => descendingComparator(a, b, orderBy)
+        : (a, b) => -descendingComparator(a, b, orderBy);
+}
 
-export const MovieTable = () => {
+export const MovieTable = ({ setSelectedMovie }: MovieTableProps) => {
     const [order, setOrder] = useState<Order>('desc');
-    const [orderBy, setOrderBy] = useState<keyof TableData>('reviews');
+    const [orderBy, setOrderBy] = useState<keyof MovieTableData>('reviews');
 
     const handleRequestSort = (
-        event: React.MouseEvent<unknown>,
-        property: keyof TableData,
+        event: React.MouseEvent<HTMLElement>,
+        property: keyof MovieTableData,
     ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
 
-    const createData = (movie: Movie): TableData => {
+    const createData = (movie: Movie): MovieTableData => {
         return {
             id: movie.id,
             title: movie.title,
@@ -81,6 +59,10 @@ export const MovieTable = () => {
     const movies = mockMovieData.map((movie) => createData(movie));
 
     const sortedMovies = movies.sort(getComparator(order, orderBy));
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>, movie: MovieTableData) => {
+        setSelectedMovie(movie);
+    };
 
     return (
         <TableContainer component={Paper}>
@@ -109,8 +91,10 @@ export const MovieTable = () => {
             <TableBody>
               {sortedMovies.map((movie) => (
                 <TableRow
+                  hover
                   key={movie.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  sx={{ cursor: 'pointer' }}
+                  onClick={(event) => handleClick(event, movie)}
                 >
                   <TableCell component="th" scope="row">
                     {movie.title}
