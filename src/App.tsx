@@ -1,9 +1,11 @@
-import { useRef, useState, Children} from 'react';
+import { useRef, useState, Children, useReducer, useEffect} from 'react';
 import { easeIn, easeOut } from "polished";
 import { useBoolean } from "react-use";
 import { createReducer }from "@reduxjs/toolkit"
 import { MovieTable } from './MovieTable';
 import { MovieTableData } from './MovieTypes';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMovieCompanies, fetchMovies, getMovies } from './moviesReducer';
 
 // TODO: use https://giddy-beret-cod.cyclic.app/movieCompanies
 const mockMovieCompanyData: any = [
@@ -17,24 +19,29 @@ const mockMovieData: any = [
 ];
 
 export const App = () =>  {
-  const movieLength = useRef(mockMovieData.length);
-  const [selectedMovie, setSelectedMovie] = useState<MovieTableData | undefined>(undefined); 
+  const [selectedMovie, setSelectedMovie] = useState<MovieTableData | undefined>(undefined);
+
+  const dispatch = useDispatch();
+  const movies = useSelector(getMovies);
 
   const refreshButton = (buttonText: any) => {
     if (mockMovieCompanyData) {
-      return <button>{buttonText}</button>
+      return <button onClick={() => dispatch(fetchMovies() as any)}>{buttonText}</button>
     } else {
       return <p>No movies loaded yet</p>
     }   
   };
 
-  console.log("selectedMovie", selectedMovie);
+  useEffect(() => {
+    dispatch(fetchMovies() as any);
+    dispatch(fetchMovieCompanies() as any);
+  }, []);
 
   return (
     <div>
       <h2>Welcome to Movie database!</h2>
       {refreshButton("Refresh")}
-      <p>Total movies displayed {movieLength.current}</p>
+      <p>Total movies displayed {movies?.length}</p>
       <br/>
         <MovieTable setSelectedMovie={setSelectedMovie}/>
       <br/>
