@@ -10,20 +10,19 @@ const initialState: MovieState = {
     error: null,
 };
 
-export const fetchMovieCompanies = createAsyncThunk('movies/fetchMovieCompanies', async () => {
-    const response = await axios.get<MovieCompany[]>('https://giddy-beret-cod.cyclic.app/movieCompanies');
-    return response.data;
-  });
-  
-export const fetchMovies = createAsyncThunk('movies/fetchMovies', async () => {
-    const response = await axios.get<Movie[]>('https://giddy-beret-cod.cyclic.app/movies');
-    return response.data;
-  });
+export const fetchMovieData = createAsyncThunk('movies/fetchMovieData', async () => {
+    const movieCompaniesResponse = await axios.get<MovieCompany[]>('https://giddy-beret-cod.cyclic.app/movieCompanies');
+    const moviesResponse = await axios.get<Movie[]>('https://giddy-beret-cod.cyclic.app/movies');
+    return {
+        movieCompanies: movieCompaniesResponse.data,
+        movies: moviesResponse.data
+    };
+});
   
 export const submitReview = createAsyncThunk('movies/submitReview', async (message: string) => {
     const response = await axios.post<MovieReview>('https://giddy-beret-cod.cyclic.app/submitReview', { review: message });
     return response.data;
-  });
+});
 
 const moviesSlice = createSlice({
     name: 'movieData',
@@ -31,27 +30,16 @@ const moviesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-        .addCase(fetchMovieCompanies.pending, (state) => {
+        .addCase(fetchMovieData.pending, (state) => {
             state.loading = true;
             state.error = null;
         })
-        .addCase(fetchMovieCompanies.fulfilled, (state, action) => {
+        .addCase(fetchMovieData.fulfilled, (state, action) => {
             state.loading = false;
-            state.movieCompanies = action.payload;
+            state.movieCompanies = action.payload.movieCompanies;
+            state.movies = action.payload.movies;
         })
-        .addCase(fetchMovieCompanies.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.error.message || null;
-        })
-        .addCase(fetchMovies.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(fetchMovies.fulfilled, (state, action) => {
-            state.loading = false;
-            state.movies = action.payload;
-        })
-        .addCase(fetchMovies.rejected, (state, action) => {
+        .addCase(fetchMovieData.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message || null;
         })
@@ -72,5 +60,7 @@ const moviesSlice = createSlice({
 
 export const getMovies = (state: State) => state.movieData.movies;
 export const getMovieCompanies = (state: State) => state.movieData.movieCompanies;
+export const getLoading = (state: State) => state.movieData.loading;
+export const getError = (state: State) => state.movieData.error;
 
 export default moviesSlice.reducer;

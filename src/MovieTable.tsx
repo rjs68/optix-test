@@ -1,35 +1,10 @@
 import { useState } from 'react';
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
-import { Movie, MovieCompany, MovieTableData, MovieTableProps, Order } from './MovieTypes';
+import { Movie, MovieTableData, MovieTableProps, Order } from './MovieTypes';
 import { useSelector } from 'react-redux';
 import { getMovieCompanies, getMovies } from './moviesReducer';
-
-const mockMovieCompanyData: MovieCompany[] = [
-    {id: "1", name: "Test Productions"},
-  ];
-
-const descendingComparator = <T,>(a: T, b: T, orderBy: keyof T) => {
-        if (b[orderBy] < a[orderBy]) {
-            return -1;
-        }
-        if (b[orderBy] > a[orderBy]) {
-            return 1;
-        }
-        return 0;
-}
-
-const getComparator = <Key extends keyof any>(
-    order: Order,
-    orderBy: Key,
-): (
-    a: { [key in Key]: number | string },
-    b: { [key in Key]: number | string },
-) => number => {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
+import { getComparator } from './utils/sort';
 
 export const MovieTable = ({ setSelectedMovie }: MovieTableProps) => {
     const [order, setOrder] = useState<Order>('desc');

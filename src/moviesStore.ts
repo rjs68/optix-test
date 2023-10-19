@@ -6,3 +6,5 @@ export const store = configureStore({
         movieData: moviesReducer
     },
 })
+
+export type AppDispatch = typeof store.dispatch;
