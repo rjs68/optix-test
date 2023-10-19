@@ -6,6 +6,7 @@ import { fetchMovieData, getMovieDataError, getMovieDataLoading, getMovies } fro
 import { Button, CircularProgress, Stack, Typography } from '@mui/material';
 import { AppDispatch } from './moviesStore';
 import { Review } from './Review';
+import { ErrorOutline } from '@mui/icons-material';
 
 export const App = () =>  {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,12 +25,19 @@ export const App = () =>  {
       <Button variant="contained" onClick={() => dispatch(fetchMovieData())} sx={{marginY: '20px'}}>
         Refresh Movies
       </Button>
-      {loading ? (
+      {loading && (
         <Stack alignItems="center" justifyContent="center">
           <CircularProgress sx={{madingY: '20px'}} />
           <Typography variant="body1">Loading your movies...</Typography>
         </Stack>
-      ) : (
+      )}
+      {error && (
+        <Stack alignItems="center" justifyContent="center">
+          <ErrorOutline sx={{color: 'red', fontSize: '50px'}}/>
+          <Typography variant="body1" sx={{color: 'red'}}>Oh no - something went wrong! Please try again later.</Typography>
+        </Stack>
+      )}
+      {!loading && !error && (
         <>
           <Typography variant="body1">Total movies displayed {movies?.length}</Typography>
           <MovieTable setSelectedMovie={setSelectedMovie}/>

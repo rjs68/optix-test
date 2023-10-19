@@ -41,7 +41,7 @@ export const ReviewForm = () => {
                     onChange={onInputChange}
                     error={maxLengthError}
                     helperText={maxLengthError ? "Review must be less than 100 characters" : ""}
-                    sx={{width: '100%'}}
+                    sx={{width: '100%', backgroundColor: 'white'}}
                 />
                 {submitReviewError && <Typography variant="body1" sx={{color: 'red'}}>
                     Oh no! Something went wrong - please try again later.

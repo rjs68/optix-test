@@ -38,13 +38,14 @@ export const MovieTable = ({ setSelectedMovie }: MovieTableProps) => {
 
     return (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Title</TableCell>
+                <TableCell sx={{fontWeight: 'bold'}}>Title</TableCell>
                 <TableCell
                     align="right"
                     sortDirection={order}
+                    sx={{fontWeight: 'bold'}}
                 >
                     <TableSortLabel
                         active
@@ -57,7 +58,7 @@ export const MovieTable = ({ setSelectedMovie }: MovieTableProps) => {
                         </Box>
                     </TableSortLabel>
                 </TableCell>
-                <TableCell align="right">Film Company</TableCell>
+                <TableCell align="right" sx={{fontWeight: 'bold'}}>Film Company</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

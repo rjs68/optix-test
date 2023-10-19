@@ -13,7 +13,11 @@ export const Review = () => {
 
     return isMobile ? 
         (
-            !isModalOpen ? (<Button variant="contained" onClick={onClick}>Leave a Review</Button>) : (
+            !isModalOpen ? (
+                <Button variant="contained" onClick={onClick} sx={{marginY: '20px', width: '200px'}}>
+                    Leave a Review
+                </Button>
+            ) : (
                 <Modal open={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                 >
