@@ -45,7 +45,7 @@ export const App = () =>  {
       {!loading && !error && (
         <>
           <Typography variant="body1">Total movies displayed {movies?.length}</Typography>
-          <MovieTable setSelectedMovie={setSelectedMovie}/>
+          <MovieTable selectedMovie={selectedMovie} setSelectedMovie={setSelectedMovie}/>
           <Stack sx={{marginY: '20px'}}>
             <Typography variant="body1">
               {selectedMovie ? selectedMovie.title ? "You have selected " +  selectedMovie.title : "No Movie Title" : "No Movie Selected"}

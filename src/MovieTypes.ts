@@ -26,6 +26,7 @@ export type MovieReview = {
 }
 
 export type MovieTableProps = {
+    selectedMovie: MovieTableData | undefined;
     setSelectedMovie: Dispatch<SetStateAction<MovieTableData | undefined>>;
 }
 

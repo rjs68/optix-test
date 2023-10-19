@@ -6,7 +6,7 @@ import { Movie, MovieTableData, MovieTableProps, Order } from './MovieTypes';
 import { getMovieCompanies, getMovies } from './moviesReducer';
 import { getComparator } from './utils/sort';
 
-export const MovieTable = ({ setSelectedMovie }: MovieTableProps) => {
+export const MovieTable = ({ selectedMovie, setSelectedMovie }: MovieTableProps) => {
     const [order, setOrder] = useState<Order>('desc');
     const [orderBy, setOrderBy] = useState<keyof MovieTableData>('reviews');
     const movies = useSelector(getMovies);
@@ -68,6 +68,7 @@ export const MovieTable = ({ setSelectedMovie }: MovieTableProps) => {
                   key={movie.id}
                   sx={{ cursor: 'pointer' }}
                   onClick={(event) => handleClick(event, movie)}
+                  selected={movie.id === selectedMovie?.id}
                 >
                   <TableCell component="th" scope="row">
                     {movie.title}
