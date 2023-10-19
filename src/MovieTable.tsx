@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { Movie, MovieTableData, MovieTableProps, Order } from './MovieTypes';
-import { useSelector } from 'react-redux';
 import { getMovieCompanies, getMovies } from './moviesReducer';
 import { getComparator } from './utils/sort';
 

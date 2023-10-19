@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { ReviewForm } from "./ReviewForm"
 import { Box, Button, Modal } from "@mui/material";
+import { ReviewForm } from "./ReviewForm";
 
 export const Review = () => {
     const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
@@ -40,4 +40,4 @@ export const Review = () => {
         (
             <ReviewForm/>
         )
-}
+};

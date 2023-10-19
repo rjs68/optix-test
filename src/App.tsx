@@ -1,12 +1,12 @@
 import { useState, useEffect} from 'react';
+import { Button, CircularProgress, Stack, Typography } from '@mui/material';
+import { ErrorOutline } from '@mui/icons-material';
 import { MovieTable } from './MovieTable';
 import { MovieTableData } from './MovieTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMovieData, getMovieDataError, getMovieDataLoading, getMovies } from './moviesReducer';
-import { Button, CircularProgress, Stack, Typography } from '@mui/material';
 import { AppDispatch } from './moviesStore';
 import { Review } from './Review';
-import { ErrorOutline } from '@mui/icons-material';
 
 export const App = () =>  {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,10 +19,15 @@ export const App = () =>  {
     dispatch(fetchMovieData());
   }, []);
 
+  const onClickRefresh = () => {
+    setSelectedMovie(undefined);
+    dispatch(fetchMovieData())
+  };
+
   return (
     <div>
       <Typography variant="h3">Welcome to Movie database!</Typography>
-      <Button variant="contained" onClick={() => dispatch(fetchMovieData())} sx={{marginY: '20px'}}>
+      <Button variant="contained" onClick={onClickRefresh} sx={{marginY: '20px'}}>
         Refresh Movies
       </Button>
       {loading && (
@@ -51,4 +56,4 @@ export const App = () =>  {
       )}
     </div>
   );
-}
+};

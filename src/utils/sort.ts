@@ -8,7 +8,7 @@ const descendingComparator = <T,>(a: T, b: T, orderBy: keyof T) => {
         return 1;
     }
     return 0;
-}
+};
 
 export const getComparator = <Key extends keyof any>(
 order: Order,
@@ -20,4 +20,4 @@ b: { [key in Key]: number | string },
 return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
-}
+};
