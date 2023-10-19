@@ -39,6 +39,9 @@ export type MovieState = {
     movieCompanies: MovieCompany[];
     movies: Movie[];
     review: MovieReview | null;
-    loading: boolean;
-    error: string | null;
+    movieDataLoading: boolean,
+    movieDataError: string | null,
+    submitReviewLoading: boolean,
+    submitReviewError: string | null,
+    submitReviewSuccess: boolean
 }

@@ -6,8 +6,11 @@ const initialState: MovieState = {
     movieCompanies: [],
     movies: [],
     review: null,
-    loading: false,
-    error: null,
+    movieDataLoading: false,
+    movieDataError: null,
+    submitReviewLoading: false,
+    submitReviewError: null,
+    submitReviewSuccess: false
 };
 
 export const fetchMovieData = createAsyncThunk('movies/fetchMovieData', async () => {
@@ -27,40 +30,53 @@ export const submitReview = createAsyncThunk('movies/submitReview', async (messa
 const moviesSlice = createSlice({
     name: 'movieData',
     initialState,
-    reducers: {},
+    reducers: {
+        resetSubmitReviewSuccess: (state) => {
+            state.submitReviewSuccess = false;
+        },
+        resetSubmitReviewError: (state) => {
+            state.submitReviewError = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
         .addCase(fetchMovieData.pending, (state) => {
-            state.loading = true;
-            state.error = null;
+            state.movieDataLoading = true;
+            state.movieDataError = null;
         })
         .addCase(fetchMovieData.fulfilled, (state, action) => {
-            state.loading = false;
+            state.movieDataLoading = false;
             state.movieCompanies = action.payload.movieCompanies;
             state.movies = action.payload.movies;
         })
         .addCase(fetchMovieData.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.error.message || null;
+            state.movieDataLoading = false;
+            state.movieDataError = action.error.message || null;
         })
         .addCase(submitReview.pending, (state) => {
-            state.loading = true;
-            state.error = null;
+            state.submitReviewLoading = true;
+            state.submitReviewError = null;
         })
         .addCase(submitReview.fulfilled, (state, action) => {
-            state.loading = false;
+            state.submitReviewLoading = false;
             state.review = action.payload;
+            state.submitReviewSuccess = true;
         })
         .addCase(submitReview.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.error.message || null;
+            state.submitReviewLoading = false;
+            state.submitReviewError = action.error.message || null;
         })
     }
 });
 
 export const getMovies = (state: State) => state.movieData.movies;
 export const getMovieCompanies = (state: State) => state.movieData.movieCompanies;
-export const getLoading = (state: State) => state.movieData.loading;
-export const getError = (state: State) => state.movieData.error;
+export const getMovieDataLoading = (state: State) => state.movieData.movieDataLoading;
+export const getMovieDataError = (state: State) => state.movieData.movieDataError;
+export const getSubmitReviewLoading = (state: State) => state.movieData.submitReviewLoading;
+export const getSubmitReviewError = (state: State) => state.movieData.submitReviewError;
+export const getSubmitReviewSuccess = (state: State) => state.movieData.submitReviewSuccess;
+
+export const { resetSubmitReviewSuccess, resetSubmitReviewError } = moviesSlice.actions;
 
 export default moviesSlice.reducer;
