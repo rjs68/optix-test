@@ -22,7 +22,7 @@ export type MovieTableData = {
 }
 
 export type MovieReview = {
-    review: string;
+    message: string | null;
 }
 
 export type MovieTableProps = {
@@ -38,10 +38,9 @@ export type State = {
 export type MovieState = {
     movieCompanies: MovieCompany[];
     movies: Movie[];
-    review: MovieReview | null;
+    review: string | null;
     movieDataLoading: boolean,
     movieDataError: string | null,
     submitReviewLoading: boolean,
-    submitReviewError: string | null,
-    submitReviewSuccess: boolean
+    submitReviewError: string | null
 }

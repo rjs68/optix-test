@@ -9,8 +9,7 @@ const initialState: MovieState = {
     movieDataLoading: false,
     movieDataError: null,
     submitReviewLoading: false,
-    submitReviewError: null,
-    submitReviewSuccess: false
+    submitReviewError: null
 };
 
 export const fetchMovieData = createAsyncThunk('movies/fetchMovieData', async () => {
@@ -32,7 +31,7 @@ const moviesSlice = createSlice({
     initialState,
     reducers: {
         resetSubmitReviewSuccess: (state) => {
-            state.submitReviewSuccess = false;
+            state.review = null;
         },
         resetSubmitReviewError: (state) => {
             state.submitReviewError = null;
@@ -59,8 +58,7 @@ const moviesSlice = createSlice({
         })
         .addCase(submitReview.fulfilled, (state, action) => {
             state.submitReviewLoading = false;
-            state.review = action.payload;
-            state.submitReviewSuccess = true;
+            state.review = action.payload.message;
         })
         .addCase(submitReview.rejected, (state, action) => {
             state.submitReviewLoading = false;
@@ -75,7 +73,7 @@ export const getMovieDataLoading = (state: State) => state.movieData.movieDataLo
 export const getMovieDataError = (state: State) => state.movieData.movieDataError;
 export const getSubmitReviewLoading = (state: State) => state.movieData.submitReviewLoading;
 export const getSubmitReviewError = (state: State) => state.movieData.submitReviewError;
-export const getSubmitReviewSuccess = (state: State) => state.movieData.submitReviewSuccess;
+export const getReview = (state: State) => state.movieData.review;
 
 export const { resetSubmitReviewSuccess, resetSubmitReviewError } = moviesSlice.actions;
 

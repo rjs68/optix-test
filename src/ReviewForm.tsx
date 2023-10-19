@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { AppDispatch } from "./moviesStore";
-import { getSubmitReviewError, getSubmitReviewLoading, getSubmitReviewSuccess, resetSubmitReviewError, resetSubmitReviewSuccess, submitReview } from "./moviesReducer";
+import { getReview, getSubmitReviewError, getSubmitReviewLoading, resetSubmitReviewError, resetSubmitReviewSuccess, submitReview } from "./moviesReducer";
 
 export const ReviewForm = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -11,7 +11,7 @@ export const ReviewForm = () => {
     const [maxLengthError, setMaxLengthError] = useState<boolean>(false);
     const loading = useSelector(getSubmitReviewLoading);
     const submitReviewError = useSelector(getSubmitReviewError);
-    const submitReviewSuccess = useSelector(getSubmitReviewSuccess);
+    const reviewResponse = useSelector(getReview);
 
     const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(resetSubmitReviewError());
@@ -46,8 +46,8 @@ export const ReviewForm = () => {
                 {submitReviewError && <Typography variant="body1" sx={{color: 'red'}}>
                     Oh no! Something went wrong - please try again later.
                 </Typography>}
-                {submitReviewSuccess && <Typography variant="body1" sx={{color: 'green'}}>
-                    Thanks! Your review has been submitted.
+                {reviewResponse && <Typography variant="body1" sx={{color: 'green'}}>
+                    {reviewResponse}
                 </Typography>}
                 <LoadingButton variant="contained"
                     type="submit"
